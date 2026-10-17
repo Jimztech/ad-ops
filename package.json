@@ -1,0 +1,13 @@
+{
+  "name": "ad-ops",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev:api": "npm run start:dev -w api",
+    "dev:web": "npm run dev -w frontend",
+    "build:api": "npm run build -w api",
+    "test:api": "npm test -w api",
+    "lint": "npm run lint --workspaces --if-present"
+  }
+}

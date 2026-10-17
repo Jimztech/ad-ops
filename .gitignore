@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Builds
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# Environment (keep the example file tracked)
+.env
+.env.*
+!.env.example
+
+# Tests and coverage
+coverage/
+test-results/
+playwright-report/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local data (docker volumes, eval run output)
+.data/
+pgdata/
+mongodata/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Misc
+.turbo/
+.vercel/
