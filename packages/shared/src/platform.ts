@@ -6,7 +6,7 @@ export type Channel = z.infer<typeof channelSchema>;
 export const publisherPlatformSchema = z.enum([
   'facebook',
   'instagram',
-  'other',
+  'other'
 ]);
 
 export type PublisherPlatform = z.infer<typeof publisherPlatformSchema>;
