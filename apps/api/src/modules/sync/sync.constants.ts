@@ -1,0 +1,1 @@
+export const META_ADAPTER = 'META_ADAPTER';
