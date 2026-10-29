@@ -5,6 +5,7 @@ import { AppService } from './app.service.js';
 import { DatabaseModule } from './database/database.module.js';
 import { MockMetaModule } from './modules/mock-meta/mock-meta.module.js';
 import { SyncModule } from './modules/sync/sync.module.js';
+import { MetricsModule } from './modules/metrics/metrics.module.js'
 
 
 @Module({
@@ -13,6 +14,7 @@ import { SyncModule } from './modules/sync/sync.module.js';
     MockMetaModule,
     DatabaseModule,
     SyncModule,
+    MetricsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
