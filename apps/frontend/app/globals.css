@@ -1,26 +1,149 @@
-@import "tailwindcss";
-
+/* ---------- Design tokens (estimated from the design image) ---------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --border: #eceef3;
+
+  --text-strong: #0c0c3a;
+  --text-title: #3f4468;
+  --text-body: #4b5068;
+  --text-muted: #7a7f95;
+
+  --primary: #5a5bf0;
+  --primary-soft: #eef0ff;
+
+  --blue: #5b93ff;
+  --yellow: #ffd460;
+  --coral: #ff8c69;
+
+  --tint-blue: #eef2ff;
+  --tint-yellow: #fff7e0;
+  --tint-coral: #ffefe9;
+  --tint-lavender: #eeeeff;
+
+  --cyan: #20c5e0;
+  --cyan-soft: #e1f8fc;
+  --danger: #e5484d;
+  --danger-soft: #ffe9ea;
+
+  --radius-card: 16px;
+  --radius-control: 10px;
+  --shadow-card: 0 1px 2px rgb(16 24 64 / 4%), 0 8px 24px rgb(16 24 64 / 4%);
+
+  --sidebar-w: 217px;
+  --page-pad: clamp(16px, 2.1vw, 31px);
+  --gap: clamp(12px, 2vw, 28px);
+  --card-pad: clamp(16px, 1.8vw, 26px);
+
+  --font: var(--font-nunito), system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { margin: 0; color: var(--text-strong); line-height: 1.2; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* ---------- App shell ---------- */
+.app { display: grid; grid-template-columns: minmax(0, 1fr); min-height: 100dvh; }
+.main-col { min-width: 0; }
+
+.brand { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 800; color: var(--text-strong); }
+
+.sidebar { display: none; }
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; height: 56px; padding-inline: var(--page-pad);
+  background: var(--surface); box-shadow: 0 1px 0 var(--border);
+}
+.topbar .brand { font-size: 1.25rem; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 16px; height: 48px; padding-inline: 30px;
+  color: var(--text-muted); font-weight: 700;
+}
+.nav-item.active { color: var(--primary); background: linear-gradient(90deg, var(--primary-soft), transparent); }
+
+@media (min-width: 1024px) {
+  .app { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
+  .sidebar {
+    display: flex; flex-direction: column; gap: 40px;
+    position: sticky; top: 0; height: 100dvh; overflow-y: auto;
+    padding-top: 32px; background: var(--surface);
+  }
+  .sidebar .brand { padding-inline: 30px; }
+  .topbar { display: none; }
+}
+
+/* ---------- Dashboard content ---------- */
+/* The dashboard area is a "container": its layout reacts to ITS OWN width,
+   so it still lays out correctly when the chat panel takes space later. */
+.content {
+  container: dash / inline-size;
+  padding: clamp(20px, 3vw, 36px) var(--page-pad) 48px;
+}
+
+.page-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: var(--gap); }
+.page-head h1 { font-size: clamp(1.35rem, 2.2vw, 1.6rem); font-weight: 800; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 12px; flex: 1 1 100%; }
+.pill {
+  flex: 1 1 128px; display: flex; align-items: center; min-width: 0; height: 44px;
+  padding-inline: 12px; background: var(--surface); border-radius: var(--radius-control);
+  box-shadow: var(--shadow-card); color: var(--text-body);
+}
+.pill:focus-within { outline: 2px solid var(--primary); outline-offset: 2px; }
+.pill input, .pill select {
+  width: 100%; min-width: 0; height: 100%; border: 0; background: transparent;
+  font-size: 1rem; outline: none;
+}
+.pill select {
+  appearance: none; padding-right: 22px; cursor: pointer;
+  background: no-repeat right 2px center
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%237a7f95' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.dash-grid { display: grid; gap: var(--gap); }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.row { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+
+.card { background: var(--surface); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: var(--card-pad); }
+.placeholder {
+  display: grid; place-items: center; color: var(--text-muted); font-weight: 700;
+  outline: 1px dashed var(--border); outline-offset: -8px;
+}
+.placeholder.kpi { min-height: 96px; }
+.placeholder.chart { min-height: 320px; }
+.placeholder.list { min-height: 280px; }
+
+@container dash (min-width: 700px) {
+  .filters { flex: 0 1 auto; }
+  .pill { flex: 0 0 auto; width: 176px; }
+}
+@container dash (min-width: 780px) {
+  .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@container dash (min-width: 820px) {
+  .row { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
 }
